@@ -114,7 +114,7 @@ Before running this project, ensure you have:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/quine-institute.git
+git clone https://github.com/HiamRyuthere/Quine_Institute_Backend.git
 cd quine-institute/backend
 ```
 
@@ -1165,21 +1165,15 @@ Contributions are welcome! Please follow these steps:
 
 For detailed API documentation, architecture diagrams, and implementation guides:
 
-**[📄 Download Complete Documentation (PDF)](https://github.com/your-username/quine-institute/releases/download/v1.0/Quine-Institute-Documentation.pdf)**
+**[📄 Download Complete Documentation (PDF)](https://drive.google.com/file/d/1A7BytOqIyvvhUPeUYYMD7N0IUGkYwW-h/view?usp=sharing)**
 
 ---
 
 ## 📞 Support & Contact
 
-- 🐛 **Issues:** [GitHub Issues](https://github.com/your-username/quine-institute/issues)
-- 💬 **Discussions:** [GitHub Discussions](https://github.com/your-username/quine-institute/discussions)
-- 📧 **Email:** support@quineinstitute.com
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- 🐛 **Issues:** [GitHub Issues](https://github.com/HiamRyuthere/Quine_Institute_Backend.git/issues)
+- 💬 **Discussions:** [GitHub Discussions](https://github.com/HiamRyuthere/Quine_Institute_Backend.git/discussions)
+- 📧 **Email:** hiamryu@duck.com
 
 ---
 

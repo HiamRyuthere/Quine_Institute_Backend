@@ -11,9 +11,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Configuration
@@ -26,57 +28,98 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                //**TESTING**
+                // ── CORS ──────────────────────────────────────────────────────────
                 .cors(cors -> cors.configurationSource(request -> {
-                    var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfiguration.setAllowedOrigins(java.util.List.of("*")); // Sab origins allowed (Dev ke liye okay hai)
-                    corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
-                    return corsConfiguration;
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(List.of("*"));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowedHeaders(List.of("*"));
+                    return config;
                 }))
-                // **TESTING**
+
+                // ── CSRF (disabled — JWT use ho raha hai) ─────────────────────────
                 .csrf(csrf -> csrf.disable())
+
                 .authorizeHttpRequests(auth -> auth
-                        // Public Endpoints
+
+                        // ══════════════════════════════════════════════════════════════
+                        // PUBLIC — No token needed
+                        // ══════════════════════════════════════════════════════════════
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/notices/**").permitAll()
-                        .requestMatchers("/api/v1/admissions/apply").permitAll()
 
-                        // Protected Employee Management (Admin only)
-                        .requestMatchers("/api/v1/employees/").hasRole("ADMIN")// Currently permitAll for initial setup
-                        .requestMatchers("/api/v1/employees/**").authenticated()
-                        //Section Management
-                        // Section Management
-                        .requestMatchers(HttpMethod.POST, "/api/v1/sections").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/sections").hasAnyRole("ADMIN", "FACULTY")
-                        // Admission Management
-                                .requestMatchers("/api/v1/admissions/apply").permitAll()
-                                .requestMatchers("/api/v1/admissions/approve/**", "/api/v1/admissions/pending").hasRole("ADMIN")
-                                .requestMatchers("/api/v1/admissions/**").hasRole("ADMIN")
+                        // Notices — GET public, POST sirf ADMIN
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/notices").permitAll()
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/notices/archive").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/notices").hasRole("ADMIN")
 
-                        // Student Management
-                        .requestMatchers(HttpMethod.POST, "/api/v1/students").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/students").hasAnyRole("ADMIN", "FACULTY")
-                        .requestMatchers("/api/v1/students/**").authenticated()
-
-                        //Program Endpoints
+                        // Programs — GET public, POST sirf ADMIN
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/programs").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/programs").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/v1/programs").permitAll()
 
-                        //**TESTING PAYMENT TESTING PAYMENT//
+                        // Applications — apply public, baaki ADMIN only
+                        // (Controller path: /api/v1/applications — NOT /admissions)
+                        .requestMatchers(HttpMethod.POST, "/api/v1/applications/apply").permitAll()
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/applications/pending").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,  "/api/v1/applications/approve/**").hasRole("ADMIN")
+
+                        // ══════════════════════════════════════════════════════════════
+                        // EMPLOYEES — Role-based
+                        // ══════════════════════════════════════════════════════════════
+                        .requestMatchers(HttpMethod.POST, "/api/v1/employees").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/employees").hasAnyRole("ADMIN", "FACULTY")
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/employees/**").authenticated()
+
+                        // ══════════════════════════════════════════════════════════════
+                        // STUDENTS — Role-based
+                        // ══════════════════════════════════════════════════════════════
+                        .requestMatchers(HttpMethod.POST, "/api/v1/students").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/students").hasAnyRole("ADMIN", "FACULTY")
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/students/**").authenticated() // Security check service layer mein hai
+
+                        // ══════════════════════════════════════════════════════════════
+                        // SEMESTERS
+                        // ══════════════════════════════════════════════════════════════
+                        .requestMatchers(HttpMethod.POST, "/api/v1/semesters").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/semesters").authenticated()
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/semesters/**").authenticated()
+
+                        // ══════════════════════════════════════════════════════════════
+                        // SUBJECTS
+                        // ══════════════════════════════════════════════════════════════
+                        .requestMatchers(HttpMethod.POST, "/api/v1/subjects").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/subjects").authenticated()
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/subjects/**").authenticated()
+
+                        // ══════════════════════════════════════════════════════════════
+                        // EXAM RESULTS
+                        // ══════════════════════════════════════════════════════════════
+                        // Internal marks → FACULTY ; External marks → EXAMINER ; Admin can do both
+                        .requestMatchers(HttpMethod.POST, "/api/v1/results/add").hasAnyRole("ADMIN", "FACULTY", "EXAMINER")
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/results/**").authenticated()
+
+                        // ══════════════════════════════════════════════════════════════
+                        // MENTORS
+                        // ══════════════════════════════════════════════════════════════
+                        .requestMatchers(HttpMethod.POST, "/api/v1/mentors").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,  "/api/v1/mentors/**").authenticated()
+
+                        // ══════════════════════════════════════════════════════════════
+                        // PAYMENTS
+                        // ══════════════════════════════════════════════════════════════
                         .requestMatchers("/api/v1/payments/**").authenticated()
 
-                        //**TESTING PAYMENT TESTING PAYMENT
-                        // Default rule
+                        // ══════════════════════════════════════════════════════════════
+                        // DEFAULT — Sab kuch authenticated
+                        // ══════════════════════════════════════════════════════════════
                         .anyRequest().authenticated()
-
-
                 )
-                // Establish Stateless session management
+
+                // Stateless sessions (JWT hai, server session ki zarurat nahi)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                // Register the JWT filter before the standard UsernamePasswordAuthenticationFilter
+
+                // JWT filter pehle chalega
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

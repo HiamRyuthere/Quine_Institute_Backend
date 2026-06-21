@@ -7,8 +7,11 @@ import com.quine.backend.repository.UserRepository;
 import com.quine.backend.security.JwtService;
 import com.quine.backend.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import com.quine.backend.dto.ChangePasswordRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
@@ -74,5 +77,45 @@ public class AuthController {
 
 
         return response;
+    }
+
+    //Change password
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(
+            @RequestBody ChangePasswordRequest request
+    ) {
+        // Step 1: Token se logged-in user ka username nikalo
+        String username = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        // Step 2: User DB mein dhundho
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User nahi mila!"));
+
+        // Step 3: Old password verify karo
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            return ResponseEntity.badRequest()
+                    .body("Error: Purana password galat hai!");
+        }
+
+        // Step 4: New aur confirm match karo
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            return ResponseEntity.badRequest()
+                    .body("Error: New password aur confirm password match nahi karte!");
+        }
+
+        // Step 5: Same password check
+        if (passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
+            return ResponseEntity.badRequest()
+                    .body("Error: Naya password purane se alag hona chahiye!");
+        }
+
+        // Step 6: Encode karke save karo
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
+        return ResponseEntity.ok("Password successfully change ho gaya!");
     }
 }

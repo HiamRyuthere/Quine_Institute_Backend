@@ -1173,7 +1173,7 @@ For detailed API documentation, architecture diagrams, and implementation guides
 
 - 🐛 **Issues:** [GitHub Issues](https://github.com/HiamRyuthere/Quine_Institute_Backend.git/issues)
 - 💬 **Discussions:** [GitHub Discussions](https://github.com/HiamRyuthere/Quine_Institute_Backend.git/discussions)
-- 📧 **Email:** hiamryu@duck.com
+- 📧 **Email:** public_email.nursing034@aleeas.com
 
 ---
 
@@ -1187,7 +1187,7 @@ For detailed API documentation, architecture diagrams, and implementation guides
 
 <div align="center">
 
-### Made in India 🇮🇳 with ❤️ by [Ryu](https://ryuverse.fun)
+### Made in India 🇮🇳 with ❤️ by [Ryu](https://www.linkedin.com/in/hiamharsh)
 
 **⭐ Star this repo if you found it helpful!**
 

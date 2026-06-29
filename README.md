@@ -64,11 +64,6 @@ This system is designed to streamline administrative tasks and provide a seamles
 - Department management
 - Mentor-student mapping
 
-### 💳 Payment System
-- Fee status tracking
-- Payment verification
-- Automated fee calculation
-
 ---
 
 ## 🛠 Tech Stack

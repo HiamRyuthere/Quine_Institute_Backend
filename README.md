@@ -1,1189 +1,412 @@
-# 🎓 Quine Institute - College Management System
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/banner-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/banner-light.svg">
+  <img src="docs/banner-dark.svg" alt="Quine Institute — a college management backend for admissions, results and fees" width="100%">
+</picture>
 
-<div align="center">
+A backend for an academic institution: applicants apply, admins admit them into sections, students sit semester exams, pass a threshold, get promoted, and pay fees — through one REST API secured with JWT and role-based access.
 
-![Java](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=java)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.0-brightgreen?style=for-the-badge&logo=spring)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Latest-blue?style=for-the-badge&logo=postgresql)
-![JWT](https://img.shields.io/badge/JWT-Auth-black?style=for-the-badge&logo=jsonwebtokens)
+![status](https://img.shields.io/badge/status-active_development-B7791F?style=flat-square)
+![license](https://img.shields.io/badge/license-MIT-2E7D6B?style=flat-square)
 
-**A powerful, secure backend system for modern educational institutions**
-
-[Features](#-features) • [Installation](#-installation--setup) • [API Documentation](#-api-documentation) • [Tech Stack](#-tech-stack)
-
-</div>
+[Quick start](#quick-start) · [How it works](#how-the-rules-work) · [Architecture](#architecture) · [API](#api-reference) · [Roadmap](#status)
 
 ---
 
-## 📋 Table of Contents
+## What this is
 
-- [About](#-about)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Prerequisites](#-prerequisites)
-- [Installation & Setup](#-installation--setup)
-- [Environment Configuration](#-environment-configuration)
-- [API Documentation](#-api-documentation)
-- [Project Structure](#-project-structure)
-- [Security](#-security)
-- [Contributing](#-contributing)
-- [Download Documentation](#-download-documentation)
+A Spring Boot 4 service on Java 21 and PostgreSQL, built around a real academic hierarchy rather than a set of unrelated tables: `Application → Program → Semester → Subject → ExamResult`. Most of the code exists because those relationships demand it — section allocation, promotion, and a mark sheet that two different roles write to.
+
+**What it is not.** There is no frontend, no payment gateway integration (fee recording is currently a placeholder — see [status](#status)), and no test suite yet. If you need something to deploy in production today, this is not it. If you want to read how an academic domain is modelled in Spring, it is.
+
+**Status.** Active development. Authentication, admissions, student and staff management, the academic hierarchy, exam results with promotion, notices and fee tracking all work end to end. The gaps are listed openly at the bottom.
 
 ---
 
-## 🌟 About
+## Quick start
 
-**Quine Institute Backend** is a comprehensive college management system built with Spring Boot 4.0 and PostgreSQL. It handles everything from student admissions to exam results, with robust JWT-based authentication and role-based access control.
-
-This system is designed to streamline administrative tasks and provide a seamless experience for students, faculty, and administrators.
-
----
-
-## ✨ Features
-
-### 🔐 Authentication & Security
-- JWT-based authentication with secure token generation
-- Role-based access control (STUDENT, FACULTY, ADMIN)
-- Password encryption with BCrypt
-- Protected endpoints with Spring Security
-
-### 👨‍🎓 Student Management
-- Student registration and admission workflow
-- Profile management with role-based access
-- Fee tracking and payment verification
-- Mentor assignment
-
-### 📚 Academic Features
-- Program and semester management
-- Subject allocation
-- Exam result management
-- Notice board system with archive
-
-### 👥 Staff Management
-- Employee/Faculty registration
-- Department management
-- Mentor-student mapping
-
----
-
-## 🛠 Tech Stack
-
-### Backend Framework
-- **Java 21** - Latest LTS version
-- **Spring Boot 4.0.0** - Core framework
-- **Spring Web MVC** - RESTful API development
-- **Spring Data JPA** - Database operations
-- **Spring Security** - Authentication & Authorization
-
-### Database
-- **PostgreSQL** - Primary database
-- **Hibernate** - ORM with auto DDL
-
-### Security & Authentication
-- **JWT (JSON Web Tokens)** - Token-based auth
-- **BCrypt** - Password hashing
-
-### Build Tool
-- **Maven** - Dependency management
-
-### Libraries
-- **Lombok** - Boilerplate code reduction
-- **JJWT** - JWT implementation
-
----
-
-## 📦 Prerequisites
-
-Before running this project, ensure you have:
-
-- ☕ **Java Development Kit (JDK) 21** or higher
-- 🐘 **PostgreSQL 12+** installed and running
-- 📦 **Maven 3.8+** (or use the included Maven wrapper)
-- 🔧 **Git** for version control
-- 💻 Any IDE (IntelliJ IDEA recommended, VS Code, Eclipse)
-
----
-
-## 🚀 Installation & Setup
-
-### Step 1: Clone the Repository
+You need **JDK 21** and **PostgreSQL 14 or newer**. Nothing else — the Maven wrapper is committed.
 
 ```bash
 git clone https://github.com/HiamRyuthere/Quine_Institute_Backend.git
-cd quine-institute/backend
-```
+cd Quine_Institute_Backend/backend
 
-### Step 2: Configure PostgreSQL Database
+createdb quine_db
 
-1. **Create a new database:**
+export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/quine_db
+export SPRING_DATASOURCE_USERNAME=postgres
+export SPRING_DATASOURCE_PASSWORD=your_password
+export APPLICATION_SECURITY_JWT_SECRET_KEY="$(openssl rand -base64 48)"
 
-```sql
-CREATE DATABASE quine_db;
-```
-
-2. **Update database credentials** (see [Environment Configuration](#-environment-configuration))
-
-### Step 3: Configure Application Properties
-
-1. Navigate to `src/main/resources/`
-2. Copy `application.properties.example` to `application.properties`
-3. Update the following properties:
-
-```properties
-# Database Configuration
-spring.datasource.url=jdbc:postgresql://localhost:5432/quine_db
-spring.datasource.username=your_postgres_username
-spring.datasource.password=your_postgres_password
-
-# JWT Secret Key (Generate a strong secret)
-application.security.jwt.secret-key=your-super-secret-jwt-key-here
-
-# Spring Security Credentials
-spring.security.user.name=admin
-spring.security.user.password=admin123
-```
-
-> ⚠️ **Security Warning:** Never commit `application.properties` to version control! Use environment variables in production.
-
-### Step 4: Build the Project
-
-Using Maven wrapper (recommended):
-
-```bash
-# Windows
-mvnw.cmd clean install
-
-# Linux/Mac
-./mvnw clean install
-```
-
-Or using system Maven:
-
-```bash
-mvn clean install
-```
-
-### Step 5: Run the Application
-
-```bash
-# Using Maven wrapper
 ./mvnw spring-boot:run
-
-# Or using Maven
-mvn spring-boot:run
 ```
 
-The application will start on **http://localhost:8080**
-
-### Step 6: Verify Installation
-
-Test the health of your API:
+**Success looks like this:** the log prints `Started BackendApplication`, and
 
 ```bash
-curl http://localhost:8080/api/v1/programs
+curl -s localhost:8080/api/v1/programs
+```
+
+returns a JSON array containing the seeded BCA program. First boot creates a demo dataset — six semesters of subjects, an admin, sample students, mentors and notices — so every endpoint is reachable immediately.
+
+The seeded admin credentials live in `DataInitializer`. Change them before this runs anywhere other than your machine.
+
+> The JWT secret must be at least 256 bits for HS256. A shorter key stops the application at startup with `WeakKeyException` — that is Spring telling you the key is guessable, not a bug in the setup.
+
+<details>
+<summary><b>Configuration reference</b></summary>
+
+<br>
+
+Every property can be overridden by an environment variable, so no file needs editing:
+
+| Variable | Property | Notes |
+|---|---|---|
+| `SPRING_DATASOURCE_URL` | `spring.datasource.url` | JDBC URL |
+| `SPRING_DATASOURCE_USERNAME` | `spring.datasource.username` | |
+| `SPRING_DATASOURCE_PASSWORD` | `spring.datasource.password` | |
+| `APPLICATION_SECURITY_JWT_SECRET_KEY` | `application.security.jwt.secret-key` | ≥ 32 bytes |
+
+</details>
+
+---
+
+## The task most people open this for
+
+An applicant submits a form with no account. An admin approves it. The system then does four things at once: creates the student, generates a roll number, assigns a section by capacity, and issues a login.
+
+```bash
+# public — no token needed
+curl -X POST localhost:8080/api/v1/applications/apply \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"A. Student","email":"a@example.com","mobileNumber":"9000000000","percentage":78.4,"program":{"id":1}}'
+
+# admin — approve, and the student is created
+curl -X PUT localhost:8080/api/v1/applications/approve/1 \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor A as Applicant
+    participant API as REST API
+    participant S as ApplicationService
+    participant DB as PostgreSQL
+
+    A->>API: POST /applications/apply
+    API->>S: applyNow(application)
+    S->>DB: save — status PENDING
+
+    Note over API,DB: An admin reviews the queue
+
+    API->>S: PUT /applications/approve/{id}
+    S->>DB: count students in Semester 1
+    alt seats available
+        S->>DB: create Student + assign section
+        S->>DB: create User (roll number + hashed password)
+        S-->>API: student with generated roll number
+    else capacity reached
+        S-->>API: rejected — seats full
+    end
 ```
 
 ---
 
-## ⚙️ Environment Configuration
+## How the rules work
 
-### application.properties.example
+Three pieces of logic carry the project. Each is short enough to read in the source, and each is here because a naive implementation gets it wrong.
 
-Create this file as a template for your configuration:
+<details>
+<summary><b>Section allocation without a Section table</b> — why there is no section entity</summary>
 
-```properties
-# Application Name
-spring.application.name=quine-backend
+<br>
 
-# Database Connection
-spring.datasource.url=jdbc:postgresql://localhost:5432/your_db_name
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.datasource.driver-class-name=org.postgresql.Driver
+Program capacity is split into quarters and the count of students already enrolled decides the bucket:
 
-# JPA Settings
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-
-# Security
-spring.security.user.name=admin
-spring.security.user.password=secure_password
-
-# JWT Configuration
-application.security.jwt.secret-key=your-256-bit-secret-key-here
+```java
+int sectionSize = programCapacity / 4;
+if      (currentCount < sectionSize)     section = ALPHA;
+else if (currentCount < sectionSize * 2) section = BETA;
+else if (currentCount < sectionSize * 3) section = GAMA;
+else                                     section = DELTA;
 ```
 
-### .gitignore Configuration
+A `Section` table would store four rows per program and buy nothing — a section has no attributes of its own here. The trade-off is that changing the number of sections means changing code, and a capacity not divisible by four leaves a remainder that currently falls into `DELTA`.
 
-Ensure your `.gitignore` includes:
+</details>
+
+<details>
+<summary><b>Promotion at 60%</b> — and why ExamResult has no semester column</summary>
+
+<br>
+
+```mermaid
+flowchart TD
+    R["Result saved"] --> C{"Student has a semester?"}
+    C -- no --> X["No promotion check"]
+    C -- yes --> T["Count subjects in current semester"]
+    T --> P["Count subjects passed"]
+    P --> Q{"passed >= 60%?"}
+    Q -- no --> X
+    Q -- yes --> N{"Next semester exists?"}
+    N -- no --> D["Program complete"]
+    N -- yes --> U["Student promoted"]
+```
+
+The current term is derived by walking `result → subject → semester` rather than being copied onto the result. That keeps the schema normalised and makes a result impossible to attribute to the wrong term. The cost is a join on every promotion check.
+
+</details>
+
+<details>
+<summary><b>Two roles, one mark sheet</b> — how faculty and examiners stay apart</summary>
+
+<br>
+
+`ExamResult` holds `internalMarks` and `externalMarks` separately, and each role may write only its own half. Pass/fail is never stored from input — the service computes it from the total at a 33-mark boundary:
+
+```java
+int total = internal + external;
+result.setStatus(total < 33 ? "FAIL" : "PASS");
+```
+
+Splitting the columns rather than the rows means a single result record survives both roles writing to it, with no merge step.
+
+</details>
+
+---
+
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph client["Client"]
+        C["Web / Mobile"]
+    end
+
+    subgraph security["Security"]
+        F["JwtAuthenticationFilter"]
+        SC["SecurityFilterChain"]
+    end
+
+    subgraph app["Application"]
+        CT["Controllers<br>HTTP + authorisation"]
+        SV["Services<br>business rules"]
+        RP["Repositories<br>Spring Data JPA"]
+    end
+
+    DB[("PostgreSQL")]
+
+    C -->|"Authorization: Bearer"| F
+    F --> SC
+    SC --> CT
+    CT --> SV
+    SV --> RP
+    RP --> DB
+```
+
+The layering is strict: controllers handle HTTP and authorisation, services own business rules, repositories are the only layer that touches the database.
+
+<details>
+<summary><b>Data model</b></summary>
+
+<br>
+
+```mermaid
+erDiagram
+    PROGRAM ||--o{ SEMESTER : contains
+    PROGRAM ||--o{ APPLICATION : "applied for"
+    SEMESTER ||--o{ SUBJECT : contains
+    SEMESTER ||--o{ STUDENT : enrols
+    SEMESTER ||--o{ MENTOR : "assigned to"
+    EMPLOYEE ||--o| MENTOR : mentors
+    STUDENT ||--o{ EXAM_RESULT : earns
+    SUBJECT ||--o{ EXAM_RESULT : "graded in"
+    USER ||--o| STUDENT : "login for"
+    USER ||--o| EMPLOYEE : "login for"
+```
+
+</details>
+
+<details>
+<summary><b>Project layout</b></summary>
+
+<br>
 
 ```
-application.properties
-*.log
-target/
-.idea/
-*.iml
+backend/src/main/java/com/quine/backend/
+├── config/        SecurityFilterChain, CORS, first-run seed data
+├── security/      JWT generation, claims, request filter
+├── controller/    11 REST controllers — HTTP and authorisation only
+├── service/       Business rules: admission, promotion, notices, fees
+├── repository/    11 Spring Data JPA interfaces
+├── model/         12 entities and 2 enums
+└── dto/           Request and response payloads
+```
+
+</details>
+
+---
+
+## API reference
+
+Base path `/api/v1`. JSON in, JSON out. Protected routes need `Authorization: Bearer <token>`.
+
+Access is written as **ADMIN**, **FACULTY**, **EXAMINER**, **STUDENT**, **STAFF**, `token` (any authenticated user) or `public`.
+
+<details>
+<summary><b>Authentication</b> — 2 endpoints</summary>
+
+<br>
+
+| Method | Endpoint | Access | Description |
+|:--:|---|:--:|---|
+| `POST` | `/auth/login` | public | Returns a JWT with the caller's role and display name |
+| `POST` | `/auth/change-password` | token | Change the logged-in user's password |
+
+```jsonc
+// POST /api/v1/auth/login
+{ "username": "100001", "password": "••••••" }
+
+// 200
+{ "message": "Login Successful!", "token": "eyJhbGciOiJIUzI1NiJ9...",
+  "role": "STUDENT", "username": "100001", "name": "Student Name" }
+```
+
+</details>
+
+<details>
+<summary><b>Admissions</b> — 3 endpoints</summary>
+
+<br>
+
+| Method | Endpoint | Access | Description |
+|:--:|---|:--:|---|
+| `POST` | `/applications/apply` | public | Submit an admission application |
+| `GET` | `/applications/pending` | ADMIN | Applications awaiting review |
+| `PUT` | `/applications/approve/{id}` | ADMIN | Approve — creates student, section and login |
+
+</details>
+
+<details>
+<summary><b>Students</b> — 3 endpoints</summary>
+
+<br>
+
+| Method | Endpoint | Access | Description |
+|:--:|---|:--:|---|
+| `POST` | `/students` | ADMIN | Enrol a student; generates roll number and login |
+| `GET` | `/students` | ADMIN, FACULTY | List all students |
+| `GET` | `/students/{studentId}` | token | By roll number — a student may read only their own |
+
+</details>
+
+<details>
+<summary><b>Academics</b> — 8 endpoints</summary>
+
+<br>
+
+| Method | Endpoint | Access | Description |
+|:--:|---|:--:|---|
+| `POST` | `/programs` | ADMIN | Create a program |
+| `GET` | `/programs` | public | List programs |
+| `POST` | `/semesters` | ADMIN | Create a semester |
+| `GET` | `/semesters` | token | List semesters |
+| `GET` | `/semesters/{id}` | token | One semester |
+| `POST` | `/subjects` | ADMIN | Create a subject |
+| `GET` | `/subjects` | token | List subjects |
+| `GET` | `/subjects/program/{programId}` | token | Subjects under a program |
+
+</details>
+
+<details>
+<summary><b>Examination</b> — 2 endpoints</summary>
+
+<br>
+
+| Method | Endpoint | Access | Description |
+|:--:|---|:--:|---|
+| `POST` | `/results/add` | ADMIN, FACULTY, EXAMINER | Record marks; computes PASS/FAIL, runs promotion |
+| `GET` | `/results/student/{studentId}` | token | Every result for one student |
+
+</details>
+
+<details>
+<summary><b>Staff and mentoring</b> — 5 endpoints</summary>
+
+<br>
+
+| Method | Endpoint | Access | Description |
+|:--:|---|:--:|---|
+| `POST` | `/employees` | ADMIN | Create an employee; a login is issued |
+| `GET` | `/employees` | ADMIN, FACULTY | List employees |
+| `GET` | `/employees/{id}` | token | One employee |
+| `POST` | `/mentors` | ADMIN | Assign a mentor to a semester and section |
+| `GET` | `/mentors/find` | token | By `semesterId` and `section` |
+
+</details>
+
+<details>
+<summary><b>Notices and fees</b> — 5 endpoints</summary>
+
+<br>
+
+| Method | Endpoint | Access | Description |
+|:--:|---|:--:|---|
+| `POST` | `/notices` | ADMIN | Publish — auto-archives after its execution date |
+| `GET` | `/notices` | public | Active notices |
+| `GET` | `/notices/archive` | public | Archived notices |
+| `GET` | `/payments/status/{studentId}` | token | Total, paid and remaining fees |
+| `POST` | `/payments/verify` | token | Record a fee payment |
+
+</details>
+
+---
+
+## Roles
+
+| Role | Scope | Can do |
+|---|---|---|
+| ADMIN | Institution | Admissions, students, employees, programs, semesters, subjects, mentors, notices |
+| FACULTY | Teaching | View students and employees, enter internal marks, find mentors |
+| EXAMINER | Examination | Enter external marks |
+| STAFF | Support | Read academic data |
+| STUDENT | Self | Own profile, own results, fee status, notices |
+
+Two rules sit below the URL level: a student may fetch only their own roll number, and faculty and examiners are separated by which column of a mark sheet they may write rather than by which route they can reach.
+
+---
+
+## Status
+
+Active development. Honest list of what is missing, roughly in the order it matters:
+
+| Item | Why it matters |
+|---|---|
+| Server-side payment verification | The fee endpoint trusts a client-supplied value. It needs a gateway signature check and an idempotent `Payment` record before it can handle real money. |
+| DTO layer and request validation | Entities are accepted on the wire today. `@Valid` with constraints belongs on request DTOs. |
+| Transactional service methods | Approval and enrolment write to several tables and should be atomic. |
+| Role checks from the security context | Faculty and examiner permissions must come from the token, never from a request parameter. |
+| Auth route scoping | `/auth/change-password` should sit behind authentication rather than inside the public `/auth/**` matcher. |
+| Test coverage | Unit tests for promotion and section allocation, Testcontainers for repositories. |
+| Pagination | Every list endpoint returns the full table today. |
+| Flyway migrations | `ddl-auto=update` is convenient and unversioned. |
+
+---
+
+## Contributing
+
+Keep the layering intact — controllers never touch repositories, and business rules live in services — and run the build before opening a pull request.
+
+```bash
+git checkout -b feature/your-feature
+./mvnw verify
 ```
 
 ---
 
-## 📖 API Documentation
+## License
 
-Base URL: `http://localhost:8080/api/v1`
+MIT — see [LICENSE](LICENSE).
 
-### 🔐 Authentication Endpoints
-
-#### 1. User Login
-
-**POST** `/auth/login`
-
-**Request Body:**
-```json
-{
-  "username": "2024BCA001",
-  "password": "password123"
-}
-```
-
-**Response:**
-```json
-{
-  "message": "Login Successful!",
-  "role": "STUDENT",
-  "username": "2024BCA001",
-  "name": "Harsh Sharma",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
-
-**Error Response:**
-```json
-{
-  "message": "User nahi mila! ID check karo."
-}
-```
-
----
-
-### 🎓 Admission Endpoints
-
-#### 1. Apply for Admission (Public - No Auth Required)
-
-**POST** `/applications/apply`
-
-**Request Body:**
-```json
-{
-  "name": "Rahul Kumar",
-  "email": "rahul@example.com",
-  "mobileNumber": "9876543210",
-  "fatherName": "Suresh Kumar",
-  "motherName": "Priya Kumar",
-  "desiredProgram": {
-    "id": 1
-  }
-}
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "name": "Rahul Kumar",
-  "email": "rahul@example.com",
-  "mobileNumber": "9876543210",
-  "fatherName": "Suresh Kumar",
-  "motherName": "Priya Kumar",
-  "status": "PENDING",
-  "applicationDate": "2025-02-10T14:30:00",
-  "desiredProgram": {
-    "id": 1,
-    "name": "BCA"
-  }
-}
-```
-
-#### 2. Get Pending Applications (ADMIN Only)
-
-**GET** `/applications/pending`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Response:**
-```json
-[
-  {
-    "id": 1,
-    "name": "Rahul Kumar",
-    "email": "rahul@example.com",
-    "status": "PENDING",
-    "applicationDate": "2025-02-10T14:30:00"
-  }
-]
-```
-
-#### 3. Approve Application (ADMIN Only)
-
-**PUT** `/applications/approve/{applicationId}`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "studentId": "2025BCA001",
-  "name": "Rahul Kumar",
-  "email": "rahul@example.com",
-  "mobileNumber": "9876543210",
-  "semester": {
-    "id": 1,
-    "semesterNumber": 1
-  },
-  "assignedSection": "A",
-  "joiningDate": "2025-02-10T14:35:00",
-  "totalFees": 50000.0,
-  "feesPaid": 0.0
-}
-```
-
----
-
-### 👨‍🎓 Student Endpoints
-
-#### 1. Add Student (ADMIN Only)
-
-**POST** `/students`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Request Body:**
-```json
-{
-  "studentId": "2025BCA001",
-  "name": "Harsh Sharma",
-  "email": "harsh@example.com",
-  "mobileNumber": "9876543210",
-  "fatherName": "Rajesh Sharma",
-  "motherName": "Sunita Sharma",
-  "semester": {
-    "id": 1
-  },
-  "assignedSection": "A"
-}
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "studentId": "2025BCA001",
-  "name": "Harsh Sharma",
-  "email": "harsh@example.com",
-  "mobileNumber": "9876543210",
-  "fatherName": "Rajesh Sharma",
-  "motherName": "Sunita Sharma",
-  "semester": {
-    "id": 1,
-    "semesterNumber": 1
-  },
-  "assignedSection": "A",
-  "joiningDate": "2025-02-10T10:00:00",
-  "totalFees": 50000.0,
-  "feesPaid": 0.0
-}
-```
-
-#### 2. Get All Students (ADMIN, FACULTY)
-
-**GET** `/students`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Response:**
-```json
-[
-  {
-    "id": 1,
-    "studentId": "2025BCA001",
-    "name": "Harsh Sharma",
-    "email": "harsh@example.com",
-    "semester": {
-      "id": 1,
-      "semesterNumber": 1
-    },
-    "assignedSection": "A"
-  }
-]
-```
-
-#### 3. Get Student by ID (All authenticated users)
-
-**GET** `/students/{studentId}`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "studentId": "2025BCA001",
-  "name": "Harsh Sharma",
-  "email": "harsh@example.com",
-  "mobileNumber": "9876543210",
-  "fatherName": "Rajesh Sharma",
-  "motherName": "Sunita Sharma",
-  "semester": {
-    "id": 1,
-    "semesterNumber": 1
-  },
-  "assignedSection": "A",
-  "totalFees": 50000.0,
-  "feesPaid": 15000.0
-}
-```
-
-**Error (if student tries to access other's profile):**
-```json
-{
-  "message": "Access Denied: Aap sirf apni profile dekh sakte hain."
-}
-```
-
----
-
-### 👔 Employee Endpoints
-
-#### 1. Add Employee (ADMIN Only)
-
-**POST** `/employees`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Request Body:**
-```json
-{
-  "employeeId": "EMP001",
-  "name": "Dr. Rajesh Kumar",
-  "email": "rajesh@quineinstitute.edu",
-  "department": "COMPUTER_SCIENCE",
-  "position": "Professor",
-  "mobileNumber": "9876543210"
-}
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "employeeId": "EMP001",
-  "name": "Dr. Rajesh Kumar",
-  "email": "rajesh@quineinstitute.edu",
-  "department": "COMPUTER_SCIENCE",
-  "position": "Professor",
-  "mobileNumber": "9876543210",
-  "joiningDate": "2025-02-10T10:00:00"
-}
-```
-
-#### 2. Get All Employees
-
-**GET** `/employees`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Response:**
-```json
-[
-  {
-    "id": 1,
-    "employeeId": "EMP001",
-    "name": "Dr. Rajesh Kumar",
-    "department": "COMPUTER_SCIENCE",
-    "position": "Professor"
-  }
-]
-```
-
-#### 3. Get Employee by ID
-
-**GET** `/employees/{id}`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "employeeId": "EMP001",
-  "name": "Dr. Rajesh Kumar",
-  "email": "rajesh@quineinstitute.edu",
-  "department": "COMPUTER_SCIENCE",
-  "position": "Professor",
-  "mobileNumber": "9876543210"
-}
-```
-
----
-
-### 📚 Program Endpoints
-
-#### 1. Create Program (ADMIN Only)
-
-**POST** `/programs`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Request Body:**
-```json
-{
-  "name": "BCA",
-  "code": "BCA",
-  "duration": 3,
-  "totalSemesters": 6
-}
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "name": "BCA",
-  "code": "BCA",
-  "duration": 3,
-  "totalSemesters": 6
-}
-```
-
-#### 2. Get All Programs
-
-**GET** `/programs`
-
-**Response:**
-```json
-[
-  {
-    "id": 1,
-    "name": "BCA",
-    "code": "BCA",
-    "duration": 3,
-    "totalSemesters": 6
-  },
-  {
-    "id": 2,
-    "name": "MCA",
-    "code": "MCA",
-    "duration": 2,
-    "totalSemesters": 4
-  }
-]
-```
-
----
-
-### 📅 Semester Endpoints
-
-#### 1. Create Semester (ADMIN Only)
-
-**POST** `/semesters`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Request Body:**
-```json
-{
-  "semesterNumber": 1,
-  "program": {
-    "id": 1
-  }
-}
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "semesterNumber": 1,
-  "program": {
-    "id": 1,
-    "name": "BCA",
-    "code": "BCA"
-  }
-}
-```
-
-#### 2. Get All Semesters
-
-**GET** `/semesters`
-
-**Response:**
-```json
-[
-  {
-    "id": 1,
-    "semesterNumber": 1,
-    "program": {
-      "id": 1,
-      "name": "BCA"
-    }
-  }
-]
-```
-
-#### 3. Get Semester by ID
-
-**GET** `/semesters/{id}`
-
-**Response:**
-```json
-{
-  "id": 1,
-  "semesterNumber": 1,
-  "program": {
-    "id": 1,
-    "name": "BCA",
-    "totalSemesters": 6
-  }
-}
-```
-
----
-
-### 📖 Subject Endpoints
-
-#### 1. Create Subject (ADMIN Only)
-
-**POST** `/subjects`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Request Body:**
-```json
-{
-  "name": "Data Structures",
-  "code": "CS201",
-  "credits": 4,
-  "program": {
-    "id": 1
-  },
-  "semester": {
-    "id": 1
-  }
-}
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "name": "Data Structures",
-  "code": "CS201",
-  "credits": 4,
-  "program": {
-    "id": 1,
-    "name": "BCA"
-  },
-  "semester": {
-    "id": 1,
-    "semesterNumber": 1
-  }
-}
-```
-
-#### 2. Get All Subjects
-
-**GET** `/subjects`
-
-**Response:**
-```json
-[
-  {
-    "id": 1,
-    "name": "Data Structures",
-    "code": "CS201",
-    "credits": 4
-  }
-]
-```
-
-#### 3. Get Subjects by Program
-
-**GET** `/subjects/program/{programId}`
-
-**Response:**
-```json
-[
-  {
-    "id": 1,
-    "name": "Data Structures",
-    "code": "CS201",
-    "semester": {
-      "semesterNumber": 1
-    }
-  }
-]
-```
-
----
-
-### 📊 Exam Result Endpoints
-
-#### 1. Add Exam Result (FACULTY, ADMIN)
-
-**POST** `/results/add`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Request Body:**
-```json
-{
-  "student": {
-    "id": 1
-  },
-  "subject": {
-    "id": 1
-  },
-  "marksObtained": 85,
-  "totalMarks": 100,
-  "grade": "A"
-}
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "student": {
-    "id": 1,
-    "studentId": "2025BCA001",
-    "name": "Harsh Sharma"
-  },
-  "subject": {
-    "id": 1,
-    "name": "Data Structures",
-    "code": "CS201"
-  },
-  "marksObtained": 85,
-  "totalMarks": 100,
-  "grade": "A",
-  "percentage": 85.0,
-  "examDate": "2025-02-10T10:00:00"
-}
-```
-
-#### 2. Get Student Results
-
-**GET** `/results/student/{studentId}`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Response:**
-```json
-[
-  {
-    "id": 1,
-    "subject": {
-      "name": "Data Structures",
-      "code": "CS201"
-    },
-    "marksObtained": 85,
-    "totalMarks": 100,
-    "grade": "A",
-    "percentage": 85.0
-  }
-]
-```
-
----
-
-### 👨‍🏫 Mentor Endpoints
-
-#### 1. Assign Mentor (ADMIN Only)
-
-**POST** `/mentors`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Request Body:**
-```json
-{
-  "faculty": {
-    "id": 1
-  },
-  "student": {
-    "id": 1
-  }
-}
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "faculty": {
-    "id": 1,
-    "name": "Dr. Rajesh Kumar",
-    "employeeId": "EMP001"
-  },
-  "student": {
-    "id": 1,
-    "studentId": "2025BCA001",
-    "name": "Harsh Sharma"
-  },
-  "assignedDate": "2025-02-10T10:00:00"
-}
-```
-
-#### 2. Find Mentor
-
-**GET** `/mentors/find?studentId={studentId}&facultyId={facultyId}`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "faculty": {
-    "name": "Dr. Rajesh Kumar"
-  },
-  "student": {
-    "name": "Harsh Sharma"
-  },
-  "assignedDate": "2025-02-10T10:00:00"
-}
-```
-
----
-
-### 📢 Notice Endpoints
-
-#### 1. Create Notice (ADMIN, FACULTY)
-
-**POST** `/notices`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Request Body:**
-```json
-{
-  "title": "Mid-Semester Exam Schedule",
-  "content": "Mid-semester exams will be conducted from 20th Feb to 25th Feb 2025.",
-  "targetAudience": "ALL"
-}
-```
-
-**Response:**
-```json
-{
-  "id": 1,
-  "title": "Mid-Semester Exam Schedule",
-  "content": "Mid-semester exams will be conducted from 20th Feb to 25th Feb 2025.",
-  "targetAudience": "ALL",
-  "postedDate": "2025-02-10T10:00:00",
-  "isActive": true
-}
-```
-
-#### 2. Get All Active Notices
-
-**GET** `/notices`
-
-**Response:**
-```json
-[
-  {
-    "id": 1,
-    "title": "Mid-Semester Exam Schedule",
-    "content": "Mid-semester exams will be conducted from 20th Feb to 25th Feb 2025.",
-    "postedDate": "2025-02-10T10:00:00",
-    "isActive": true
-  }
-]
-```
-
-#### 3. Get Archived Notices
-
-**GET** `/notices/archive`
-
-**Response:**
-```json
-[
-  {
-    "id": 1,
-    "title": "Previous Notice",
-    "archivedDate": "2025-01-15T10:00:00"
-  }
-]
-```
-
----
-
-### 💳 Payment Endpoints
-
-#### 1. Get Payment Status
-
-**GET** `/payments/status/{studentId}`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Response:**
-```json
-{
-  "studentId": "2025BCA001",
-  "studentName": "Harsh Sharma",
-  "totalFees": 50000.0,
-  "feesPaid": 15000.0,
-  "remainingFees": 35000.0,
-  "paymentStatus": "PARTIAL"
-}
-```
-
-#### 2. Verify Payment (ADMIN Only)
-
-**POST** `/payments/verify`
-
-**Headers:**
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Request Body:**
-```json
-{
-  "studentId": "2025BCA001",
-  "amount": 10000.0,
-  "paymentMode": "UPI",
-  "transactionId": "TXN123456789"
-}
-```
-
-**Response:**
-```json
-{
-  "message": "Payment verified successfully",
-  "studentId": "2025BCA001",
-  "totalPaid": 25000.0,
-  "remainingFees": 25000.0,
-  "transactionId": "TXN123456789"
-}
-```
-
----
-
-## 📂 Project Structure
-
-```
-Quine Institute/
-│
-├── backend/
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/quine/backend/
-│   │   │   │   ├── config/
-│   │   │   │   │   └── SecurityConfig.java
-│   │   │   │   ├── controller/
-│   │   │   │   │   ├── AuthController.java
-│   │   │   │   │   ├── StudentController.java
-│   │   │   │   │   ├── EmployeeController.java
-│   │   │   │   │   ├── AdmissionController.java
-│   │   │   │   │   ├── ProgramController.java
-│   │   │   │   │   ├── SemesterController.java
-│   │   │   │   │   ├── SubjectController.java
-│   │   │   │   │   ├── ExamResultController.java
-│   │   │   │   │   ├── MentorController.java
-│   │   │   │   │   ├── NoticeController.java
-│   │   │   │   │   └── PaymentController.java
-│   │   │   │   ├── dto/
-│   │   │   │   │   ├── LoginRequest.java
-│   │   │   │   │   └── LoginResponse.java
-│   │   │   │   ├── model/
-│   │   │   │   │   ├── User.java
-│   │   │   │   │   ├── Student.java
-│   │   │   │   │   ├── Employee.java
-│   │   │   │   │   ├── Application.java
-│   │   │   │   │   ├── Program.java
-│   │   │   │   │   ├── Semester.java
-│   │   │   │   │   ├── Subject.java
-│   │   │   │   │   ├── ExamResult.java
-│   │   │   │   │   ├── Mentor.java
-│   │   │   │   │   ├── Notice.java
-│   │   │   │   │   ├── NoticeArchive.java
-│   │   │   │   │   ├── Role.java
-│   │   │   │   │   └── Department.java
-│   │   │   │   ├── repository/
-│   │   │   │   │   ├── UserRepository.java
-│   │   │   │   │   ├── StudentRepository.java
-│   │   │   │   │   ├── EmployeeRepository.java
-│   │   │   │   │   ├── ApplicationRepository.java
-│   │   │   │   │   ├── ProgramRepository.java
-│   │   │   │   │   ├── SemesterRepository.java
-│   │   │   │   │   ├── SubjectRepository.java
-│   │   │   │   │   ├── ExamResultRepository.java
-│   │   │   │   │   ├── MentorRepository.java
-│   │   │   │   │   ├── NoticeRepository.java
-│   │   │   │   │   └── NoticeArchiveRepository.java
-│   │   │   │   ├── security/
-│   │   │   │   │   ├── JwtAuthenticationFilter.java
-│   │   │   │   │   └── JwtService.java
-│   │   │   │   ├── service/
-│   │   │   │   │   ├── CustomUserDetailsService.java
-│   │   │   │   │   ├── StudentService.java
-│   │   │   │   │   ├── EmployeeService.java
-│   │   │   │   │   ├── ApplicationService.java
-│   │   │   │   │   ├── ProgramService.java
-│   │   │   │   │   ├── SemesterService.java
-│   │   │   │   │   ├── SubjectService.java
-│   │   │   │   │   ├── ExamResultService.java
-│   │   │   │   │   ├── MentorService.java
-│   │   │   │   │   └── NoticeService.java
-│   │   │   │   └── BackendApplication.java
-│   │   │   └── resources/
-│   │   │       ├── application.properties
-│   │   │       └── application.properties.example
-│   │   └── test/
-│   ├── target/
-│   ├── .gitignore
-│   ├── pom.xml
-│   └── mvnw
-│
-└── README.md
-```
-
----
-
-## 🔒 Security
-
-### Authentication Flow
-
-1. User sends credentials to `/api/v1/auth/login`
-2. Backend validates credentials
-3. If valid, JWT token is generated and returned
-4. Client stores token (localStorage/sessionStorage)
-5. For protected routes, client sends token in Authorization header:
-   ```
-   Authorization: Bearer <jwt_token>
-   ```
-
-### Role-Based Access Control
-
-| Role | Permissions |
-|------|-------------|
-| **STUDENT** | View own profile, View notices, View own results, View fee status |
-| **FACULTY** | All STUDENT permissions + Add results, View all students, Create notices |
-| **ADMIN** | All permissions + Manage users, Approve admissions, Manage programs |
-
-### Security Best Practices
-
-- ✅ All passwords are encrypted using BCrypt
-- ✅ JWT tokens expire after configured time
-- ✅ Sensitive data (passwords, tokens) are never logged
-- ✅ CORS is configured for secure cross-origin requests
-- ✅ SQL injection prevention via JPA/Hibernate
-- ✅ Input validation on all endpoints
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### Development Guidelines
-
-- Follow Java naming conventions
-- Write clean, documented code
-- Add unit tests for new features
-- Update API documentation for new endpoints
-- Test thoroughly before submitting PR
-
----
-
-## 📥 Download Documentation
-
-For detailed API documentation, architecture diagrams, and implementation guides:
-
-**[📄 Download Complete Documentation (PDF)](https://drive.google.com/file/d/1A7BytOqIyvvhUPeUYYMD7N0IUGkYwW-h/view?usp=sharing)**
-
----
-
-## 📞 Support & Contact
-
-- 🐛 **Issues:** [GitHub Issues](https://github.com/HiamRyuthere/Quine_Institute_Backend.git/issues)
-- 💬 **Discussions:** [GitHub Discussions](https://github.com/HiamRyuthere/Quine_Institute_Backend.git/discussions)
-- 📧 **Email:** public_email.nursing034@aleeas.com
-
----
-
-## 🙏 Acknowledgments
-
-- Spring Boot Team for the amazing framework
-- PostgreSQL community
-- All contributors and testers
-
----
-
-<div align="center">
-
-### Made in India 🇮🇳 with ❤️ by [Ryu](https://www.linkedin.com/in/hiamharsh)
-
-**⭐ Star this repo if you found it helpful!**
-
-</div>
+Built by [Harsh Parmar](https://www.linkedin.com/in/hiamharsh), Indore, India.

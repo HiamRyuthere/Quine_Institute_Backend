@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="364" viewBox="0 0 1280 364" role="img" aria-label="Quine Institute — a college management backend for admissions, exams, promotion and fees">
+<style>
+  @keyframes flow { 0% { stroke-dashoffset: 476; } 68% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; } }
+  @keyframes run { 0% { transform: translateX(0); opacity: 0; } 6% { opacity: 1; }
+                    68% { transform: translateX(476px); opacity: 1; } 76% { opacity: 0; } 100% { transform: translateX(476px); opacity: 0; } }
+  @keyframes pop { 0%, 100% { r: 3.2; } 50% { r: 4.6; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .flow { stroke-dasharray: 476; animation: flow 5.2s cubic-bezier(.4,0,.2,1) infinite; }
+    .run  { animation: run 5.2s cubic-bezier(.4,0,.2,1) infinite; }
+    .f    { animation: rise .6s cubic-bezier(.2,.7,.2,1) both; }
+    .f0 { animation-delay: .05s } .f1 { animation-delay: .18s } .f2 { animation-delay: .3s }
+  }
+</style>
+<text x="44" y="84" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="11" fill="#6C7880" letter-spacing="2.4">SPRING BOOT  ·  JAVA 21  ·  POSTGRESQL</text>
+<text x="41" y="176" font-family="Georgia,'Iowan Old Style','Times New Roman',serif" font-size="78" fill="#EDE7DA">Quine Institute</text>
+<rect x="44" y="200" width="52" height="4" fill="#5FA8C7"/>
+<text x="44" y="240" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="17" fill="#9AA6AE">A college, written as a backend — admissions, exams, promotion, fees.</text>
+<text x="44" y="266" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="10.5" fill="#5FA8C7" letter-spacing="1.4">One REST API · JWT + role-based access · normalised schema</text>
+<text x="760" y="96" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="9" fill="#6C7880" letter-spacing="2">THE ACADEMIC CHAIN</text>
+<line x1="760" y1="132" x2="1236" y2="132" stroke="#252C33"/>
+<line class="flow" x1="760" y1="132" x2="1236" y2="132" stroke="#5FA8C7" stroke-width="1.6" stroke-linecap="round"/>
+<circle cx="760.0" cy="132" r="3.2" fill="#5FA8C7" fill-opacity="0.35"/>
+<text x="760.0" y="158" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8" fill="#6C7880" letter-spacing="1.4" text-anchor="middle">APPLICATION</text>
+<circle cx="879.0" cy="132" r="3.2" fill="#5FA8C7" fill-opacity="0.50"/>
+<text x="879.0" y="158" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8" fill="#6C7880" letter-spacing="1.4" text-anchor="middle">PROGRAM</text>
+<circle cx="998.0" cy="132" r="3.2" fill="#5FA8C7" fill-opacity="0.65"/>
+<text x="998.0" y="158" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8" fill="#6C7880" letter-spacing="1.4" text-anchor="middle">SEMESTER</text>
+<circle cx="1117.0" cy="132" r="3.2" fill="#5FA8C7" fill-opacity="0.80"/>
+<text x="1117.0" y="158" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8" fill="#6C7880" letter-spacing="1.4" text-anchor="middle">SUBJECT</text>
+<circle cx="1236.0" cy="132" r="3.2" fill="#5FA8C7" fill-opacity="0.95"/>
+<text x="1236.0" y="158" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8" fill="#6C7880" letter-spacing="1.4" text-anchor="middle">EXAM RESULT</text>
+<circle class="run" cx="760" cy="132" r="4.2" fill="#D08C4E"/>
+<line x1="44" y1="292" x2="1236" y2="292" stroke="#252C33"/>
+<text x="44" y="328" font-family="Georgia,'Iowan Old Style','Times New Roman',serif" font-size="21" fill="#EDE7DA">25+</text>
+<text x="45" y="344" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="9" fill="#6C7880" letter-spacing="1.4">REST ENDPOINTS</text>
+<text x="294" y="328" font-family="Georgia,'Iowan Old Style','Times New Roman',serif" font-size="21" fill="#EDE7DA">12</text>
+<text x="295" y="344" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="9" fill="#6C7880" letter-spacing="1.4">JPA ENTITIES</text>
+<text x="544" y="328" font-family="Georgia,'Iowan Old Style','Times New Roman',serif" font-size="21" fill="#EDE7DA">11</text>
+<text x="545" y="344" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="9" fill="#6C7880" letter-spacing="1.4">CONTROLLERS</text>
+<text x="794" y="328" font-family="Georgia,'Iowan Old Style','Times New Roman',serif" font-size="21" fill="#EDE7DA">5</text>
+<text x="795" y="344" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="9" fill="#6C7880" letter-spacing="1.4">ROLES</text>
+</svg>

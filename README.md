@@ -1,13 +1,11 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/banner-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="docs/banner-light.svg">
-  <img src="docs/banner-dark.svg" alt="Quine Institute — a college management backend for admissions, results and fees" width="100%">
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="docs/hero-dark-m.svg">
+  <source media="(max-width: 600px)" srcset="docs/hero-light-m.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/hero-dark.svg">
+  <img src="docs/hero-light.svg" alt="Quine Institute — a college management backend for admissions, exams, promotion and fees" width="100%">
 </picture>
 
 A backend for an academic institution: applicants apply, admins admit them into sections, students sit semester exams, pass a threshold, get promoted, and pay fees — through one REST API secured with JWT and role-based access.
-
-![status](https://img.shields.io/badge/status-active_development-B7791F?style=flat-square)
-![license](https://img.shields.io/badge/license-MIT-2E7D6B?style=flat-square)
 
 [Quick start](#quick-start) · [How it works](#how-the-rules-work) · [Architecture](#architecture) · [API](#api-reference) · [Roadmap](#status)
 

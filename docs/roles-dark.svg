@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="320" viewBox="0 0 880 320" role="img" aria-label="Role permissions matrix for the Quine Institute backend">
+<style>
+  @keyframes rise { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .r { animation: rise .5s cubic-bezier(.2,.7,.2,1) both; }
+    .r0 { animation-delay: .04s } .r1 { animation-delay: .1s } .r2 { animation-delay: .16s }
+    .r3 { animation-delay: .22s } .r4 { animation-delay: .28s } .r5 { animation-delay: .34s }
+    .r6 { animation-delay: .4s } .r7 { animation-delay: .46s }
+  }
+</style>
+<text x="36" y="34" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="9.5" fill="#6C7880" letter-spacing="2">WHO CAN TOUCH WHAT</text>
+<text x="378.3333333333333" y="34" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8.5" fill="#6C7880" letter-spacing="1.2" text-anchor="middle">ADMISSIONS</text>
+<text x="463.0" y="34" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8.5" fill="#6C7880" letter-spacing="1.2" text-anchor="middle">ACADEMICS</text>
+<text x="547.6666666666667" y="34" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8.5" fill="#6C7880" letter-spacing="1.2" text-anchor="middle">MARKS</text>
+<text x="632.3333333333334" y="34" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8.5" fill="#6C7880" letter-spacing="1.2" text-anchor="middle">FEES</text>
+<text x="717.0000000000001" y="34" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8.5" fill="#6C7880" letter-spacing="1.2" text-anchor="middle">NOTICES</text>
+<text x="801.6666666666667" y="34" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="8.5" fill="#6C7880" letter-spacing="1.2" text-anchor="middle">OWN DATA</text>
+<g class="r r0">
+<line x1="36" y1="54" x2="844" y2="54" stroke="#252C33"/>
+<text x="36" y="76" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" fill="#EDE7DA" letter-spacing="1.6">ADMIN</text>
+<text x="132" y="76" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="10" fill="#6C7880">Institution</text>
+<circle cx="378.3333333333333" cy="72" r="3.6" fill="#5FA8C7"/>
+<circle cx="463.0" cy="72" r="3.6" fill="#5FA8C7"/>
+<circle cx="547.6666666666667" cy="72" r="3.6" fill="#5FA8C7"/>
+<circle cx="632.3333333333334" cy="72" r="3.6" fill="#5FA8C7"/>
+<circle cx="717.0000000000001" cy="72" r="3.6" fill="#5FA8C7"/>
+<circle cx="801.6666666666667" cy="72" r="3.6" fill="#5FA8C7"/>
+</g>
+<g class="r r1">
+<line x1="36" y1="100" x2="844" y2="100" stroke="#252C33"/>
+<text x="36" y="122" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" fill="#EDE7DA" letter-spacing="1.6">FACULTY</text>
+<text x="132" y="122" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="10" fill="#6C7880">Teaching</text>
+<circle cx="378.3333333333333" cy="118" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="463.0" cy="118" r="3.4" fill="none" stroke="#5FA8C7" stroke-width="1.4"/><circle cx="463.0" cy="118" r="1.6" fill="#5FA8C7"/>
+<circle cx="547.6666666666667" cy="118" r="3.4" fill="none" stroke="#5FA8C7" stroke-width="1.4"/><circle cx="547.6666666666667" cy="118" r="1.6" fill="#5FA8C7"/>
+<circle cx="632.3333333333334" cy="118" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="717.0000000000001" cy="118" r="3.4" fill="none" stroke="#5FA8C7" stroke-width="1.4"/><circle cx="717.0000000000001" cy="118" r="1.6" fill="#5FA8C7"/>
+<circle cx="801.6666666666667" cy="118" r="3.6" fill="#5FA8C7"/>
+</g>
+<g class="r r2">
+<line x1="36" y1="146" x2="844" y2="146" stroke="#252C33"/>
+<text x="36" y="168" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" fill="#EDE7DA" letter-spacing="1.6">EXAMINER</text>
+<text x="132" y="168" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="10" fill="#6C7880">Examination</text>
+<circle cx="378.3333333333333" cy="164" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="463.0" cy="164" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="547.6666666666667" cy="164" r="3.4" fill="none" stroke="#5FA8C7" stroke-width="1.4"/><circle cx="547.6666666666667" cy="164" r="1.6" fill="#5FA8C7"/>
+<circle cx="632.3333333333334" cy="164" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="717.0000000000001" cy="164" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="801.6666666666667" cy="164" r="3.6" fill="#5FA8C7"/>
+</g>
+<g class="r r3">
+<line x1="36" y1="192" x2="844" y2="192" stroke="#252C33"/>
+<text x="36" y="214" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" fill="#EDE7DA" letter-spacing="1.6">STAFF</text>
+<text x="132" y="214" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="10" fill="#6C7880">Support</text>
+<circle cx="378.3333333333333" cy="210" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="463.0" cy="210" r="3.4" fill="none" stroke="#5FA8C7" stroke-width="1.4"/><circle cx="463.0" cy="210" r="1.6" fill="#5FA8C7"/>
+<circle cx="547.6666666666667" cy="210" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="632.3333333333334" cy="210" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="717.0000000000001" cy="210" r="3.4" fill="none" stroke="#5FA8C7" stroke-width="1.4"/><circle cx="717.0000000000001" cy="210" r="1.6" fill="#5FA8C7"/>
+<circle cx="801.6666666666667" cy="210" r="3.6" fill="#5FA8C7"/>
+</g>
+<g class="r r4">
+<line x1="36" y1="238" x2="844" y2="238" stroke="#252C33"/>
+<text x="36" y="260" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" fill="#EDE7DA" letter-spacing="1.6">STUDENT</text>
+<text x="132" y="260" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="10" fill="#6C7880">Self</text>
+<circle cx="378.3333333333333" cy="256" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="463.0" cy="256" r="3.4" fill="none" stroke="#5FA8C7" stroke-width="1.4"/><circle cx="463.0" cy="256" r="1.6" fill="#5FA8C7"/>
+<circle cx="547.6666666666667" cy="256" r="3.4" fill="none" stroke="#252C33" stroke-width="1.4"/>
+<circle cx="632.3333333333334" cy="256" r="3.4" fill="none" stroke="#5FA8C7" stroke-width="1.4"/><circle cx="632.3333333333334" cy="256" r="1.6" fill="#5FA8C7"/>
+<circle cx="717.0000000000001" cy="256" r="3.4" fill="none" stroke="#5FA8C7" stroke-width="1.4"/><circle cx="717.0000000000001" cy="256" r="1.6" fill="#5FA8C7"/>
+<circle cx="801.6666666666667" cy="256" r="3.6" fill="#5FA8C7"/>
+</g>
+<text x="36" y="308" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="9" fill="#6C7880" letter-spacing="1.2">filled = full access      ring = writes only its own column      empty = none</text>
+</svg>

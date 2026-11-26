@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="372" viewBox="0 0 880 372" role="img" aria-label="Open items and their severity for the Quine Institute backend">
+<style>
+  @keyframes rise { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .r { animation: rise .5s cubic-bezier(.2,.7,.2,1) both; }
+    .r0 { animation-delay: .04s } .r1 { animation-delay: .1s } .r2 { animation-delay: .16s }
+    .r3 { animation-delay: .22s } .r4 { animation-delay: .28s } .r5 { animation-delay: .34s }
+    .r6 { animation-delay: .4s } .r7 { animation-delay: .46s }
+  }
+</style>
+<text x="36" y="34" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="9.5" fill="#8F9AA4" letter-spacing="2">WHAT IS STILL MISSING</text>
+<text x="844" y="34" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="9" fill="#8F9AA4" letter-spacing="1.6" text-anchor="end">SEVERITY</text>
+<g class="r r0">
+<line x1="36" y1="54" x2="844" y2="54" stroke="#D9D2C3"/>
+<text x="36" y="74" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" fill="#14181C">Server-side payment verification</text>
+<text x="36" y="90" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10" fill="#8F9AA4">Fee endpoint trusts a client-supplied value</text>
+<rect x="822" y="66" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="829" y="66" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="836" y="66" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+</g>
+<g class="r r1">
+<line x1="36" y1="92" x2="844" y2="92" stroke="#D9D2C3"/>
+<text x="36" y="112" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" fill="#14181C">DTO layer and request validation</text>
+<text x="36" y="128" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10" fill="#8F9AA4">Entities are accepted on the wire</text>
+<rect x="822" y="104" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="829" y="104" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="836" y="104" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+</g>
+<g class="r r2">
+<line x1="36" y1="130" x2="844" y2="130" stroke="#D9D2C3"/>
+<text x="36" y="150" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" fill="#14181C">Transactional service methods</text>
+<text x="36" y="166" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10" fill="#8F9AA4">Approval and enrolment write to several tables</text>
+<rect x="822" y="142" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="829" y="142" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="836" y="142" width="4.5" height="10" rx="1.5" fill="#D9D2C3"/>
+</g>
+<g class="r r3">
+<line x1="36" y1="168" x2="844" y2="168" stroke="#D9D2C3"/>
+<text x="36" y="188" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" fill="#14181C">Role checks from the security context</text>
+<text x="36" y="204" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10" fill="#8F9AA4">Permissions must come from the token</text>
+<rect x="822" y="180" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="829" y="180" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="836" y="180" width="4.5" height="10" rx="1.5" fill="#D9D2C3"/>
+</g>
+<g class="r r4">
+<line x1="36" y1="206" x2="844" y2="206" stroke="#D9D2C3"/>
+<text x="36" y="226" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" fill="#14181C">Auth route scoping</text>
+<text x="36" y="242" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10" fill="#8F9AA4">Change-password sits in the public matcher</text>
+<rect x="822" y="218" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="829" y="218" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="836" y="218" width="4.5" height="10" rx="1.5" fill="#D9D2C3"/>
+</g>
+<g class="r r5">
+<line x1="36" y1="244" x2="844" y2="244" stroke="#D9D2C3"/>
+<text x="36" y="264" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" fill="#14181C">Test coverage</text>
+<text x="36" y="280" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10" fill="#8F9AA4">Unit tests for promotion and allocation</text>
+<rect x="822" y="256" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="829" y="256" width="4.5" height="10" rx="1.5" fill="#D9D2C3"/>
+<rect x="836" y="256" width="4.5" height="10" rx="1.5" fill="#D9D2C3"/>
+</g>
+<g class="r r6">
+<line x1="36" y1="282" x2="844" y2="282" stroke="#D9D2C3"/>
+<text x="36" y="302" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" fill="#14181C">Pagination</text>
+<text x="36" y="318" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10" fill="#8F9AA4">Every list endpoint returns the full table</text>
+<rect x="822" y="294" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="829" y="294" width="4.5" height="10" rx="1.5" fill="#D9D2C3"/>
+<rect x="836" y="294" width="4.5" height="10" rx="1.5" fill="#D9D2C3"/>
+</g>
+<g class="r r7">
+<line x1="36" y1="320" x2="844" y2="320" stroke="#D9D2C3"/>
+<text x="36" y="340" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12.5" fill="#14181C">Flyway migrations</text>
+<text x="36" y="356" font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10" fill="#8F9AA4">ddl-auto=update is unversioned</text>
+<rect x="822" y="332" width="4.5" height="10" rx="1.5" fill="#B5763A"/>
+<rect x="829" y="332" width="4.5" height="10" rx="1.5" fill="#D9D2C3"/>
+<rect x="836" y="332" width="4.5" height="10" rx="1.5" fill="#D9D2C3"/>
+</g>
+</svg>

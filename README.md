@@ -7,11 +7,11 @@
 
 A backend for an academic institution: applicants apply, admins admit them into sections, students sit semester exams, pass a threshold, get promoted, and pay fees — through one REST API secured with JWT and role-based access.
 
-[Quick start](#quick-start) · [How it works](#how-the-rules-work) · [Architecture](#architecture) · [API](#api-reference) · [Roadmap](#status)
+[Quick start](#02--quick-start) · [How the rules work](#04--how-the-rules-work) · [Architecture](#05--architecture) · [API](#06--api-reference) · [Status](#08--status)
 
 ---
 
-## What this is
+## 01 · What this is
 
 A Spring Boot 4 service on Java 21 and PostgreSQL, built around a real academic hierarchy rather than a set of unrelated tables: `Application → Program → Semester → Subject → ExamResult`. Most of the code exists because those relationships demand it — section allocation, promotion, and a mark sheet that two different roles write to.
 
@@ -21,7 +21,7 @@ A Spring Boot 4 service on Java 21 and PostgreSQL, built around a real academic 
 
 ---
 
-## Quick start
+## 02 · Quick start
 
 You need **JDK 21** and **PostgreSQL 14 or newer**. Nothing else — the Maven wrapper is committed.
 
@@ -69,7 +69,7 @@ Every property can be overridden by an environment variable, so no file needs ed
 
 ---
 
-## The task most people open this for
+## 03 · The task most people open this for
 
 An applicant submits a form with no account. An admin approves it. The system then does four things at once: creates the student, generates a roll number, assigns a section by capacity, and issues a login.
 
@@ -111,7 +111,7 @@ sequenceDiagram
 
 ---
 
-## How the rules work
+## 04 · How the rules work
 
 Three pieces of logic carry the project. Each is short enough to read in the source, and each is here because a naive implementation gets it wrong.
 
@@ -174,7 +174,7 @@ Splitting the columns rather than the rows means a single result record survives
 
 ---
 
-## Architecture
+## 05 · Architecture
 
 ```mermaid
 flowchart LR
@@ -246,7 +246,7 @@ backend/src/main/java/com/quine/backend/
 
 ---
 
-## API reference
+## 06 · API reference
 
 Base path `/api/v1`. JSON in, JSON out. Protected routes need `Authorization: Bearer <token>`.
 
@@ -361,38 +361,33 @@ Access is written as **ADMIN**, **FACULTY**, **EXAMINER**, **STUDENT**, **STAFF*
 
 ---
 
-## Roles
+## 07 · Roles
 
-| Role | Scope | Can do |
-|---|---|---|
-| ADMIN | Institution | Admissions, students, employees, programs, semesters, subjects, mentors, notices |
-| FACULTY | Teaching | View students and employees, enter internal marks, find mentors |
-| EXAMINER | Examination | Enter external marks |
-| STAFF | Support | Read academic data |
-| STUDENT | Self | Own profile, own results, fee status, notices |
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="docs/roles-dark-m.svg">
+  <source media="(max-width: 600px)" srcset="docs/roles-light-m.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/roles-dark.svg">
+  <img src="docs/roles-light.svg" alt="Role permissions matrix: admin full access; faculty reads and writes internal marks; examiner writes external marks; staff reads academic data; student sees own data" width="100%">
+</picture>
 
 Two rules sit below the URL level: a student may fetch only their own roll number, and faculty and examiners are separated by which column of a mark sheet they may write rather than by which route they can reach.
 
 ---
 
-## Status
+## 08 · Status
 
 Active development. Honest list of what is missing, roughly in the order it matters:
 
-| Item | Why it matters |
-|---|---|
-| Server-side payment verification | The fee endpoint trusts a client-supplied value. It needs a gateway signature check and an idempotent `Payment` record before it can handle real money. |
-| DTO layer and request validation | Entities are accepted on the wire today. `@Valid` with constraints belongs on request DTOs. |
-| Transactional service methods | Approval and enrolment write to several tables and should be atomic. |
-| Role checks from the security context | Faculty and examiner permissions must come from the token, never from a request parameter. |
-| Auth route scoping | `/auth/change-password` should sit behind authentication rather than inside the public `/auth/**` matcher. |
-| Test coverage | Unit tests for promotion and section allocation, Testcontainers for repositories. |
-| Pagination | Every list endpoint returns the full table today. |
-| Flyway migrations | `ddl-auto=update` is convenient and unversioned. |
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="docs/status-dark-m.svg">
+  <source media="(max-width: 600px)" srcset="docs/status-light-m.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/status-dark.svg">
+  <img src="docs/status-light.svg" alt="Open items and their severity: payment verification, request validation, transactions, role checks, auth scoping, tests, pagination, migrations" width="100%">
+</picture>
 
 ---
 
-## Contributing
+## 09 · Contributing
 
 Keep the layering intact — controllers never touch repositories, and business rules live in services — and run the build before opening a pull request.
 
@@ -403,7 +398,7 @@ git checkout -b feature/your-feature
 
 ---
 
-## License
+## 10 · License
 
 MIT — see [LICENSE](LICENSE).
 
